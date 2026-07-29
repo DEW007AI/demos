@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Demo</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .loading { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; }
+        .loading .spinner { width:50px; height:50px; border:4px solid #e0e0e0; border-top-color:#667eea; border-radius:50%; animation:spin 1s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .error { text-align:center; padding:40px; color:#721c24; background:#f8d7da; border-radius:8px; max-width:500px; margin:100px auto; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p style="margin-top:20px;color:#666;">Loading your demo...</p>
+    </div>
+    <div id="demo-container"></div>
+
+    <script>
+        // YOUR APPS SCRIPT WEB APP URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const demoCode = urlParams.get('code');
+        
+        if (!demoCode) {
+            document.getElementById('loading').innerHTML = `
+                <div class="error">
+                    <h2>❌ No Demo Code</h2>
+                    <p>Please use a valid demo link.</p>
+                </div>
+            `;
+        } else {
+            loadDemo();
+        }
+        
+        async function loadDemo() {
+            try {
+                // Track view
+                fetch(SCRIPT_URL + '?action=track&code=' + demoCode + '&type=view');
+                
+                // Load demo
+                const response = await fetch(SCRIPT_URL + '?action=getDemo&code=' + demoCode);
+                const data = await response.json();
+                
+                if (data.success && data.html) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('demo-container').innerHTML = data.html;
+                    
+                    // Track CTA clicks
+                    document.addEventListener('click', function(e) {
+                        const target = e.target.closest('a, button');
+                        if (target) {
+                            const text = target.textContent.toLowerCase();
+                            if (/contact|get|start|purchase|book|call|email|learn more|sign up|register/.test(text) ||
+                                target.href?.startsWith('mailto:') ||
+                                target.href?.startsWith('tel:')) {
+                                fetch(SCRIPT_URL + '?action=track&code=' + demoCode + '&type=cta');
+                            }
+                        }
+                    });
+                    
+                    // Track time
+                    let seconds = 0;
+                    setInterval(() => {
+                        seconds += 30;
+                        fetch(SCRIPT_URL + '?action=track&code=' + demoCode + '&type=time&seconds=30');
+                    }, 30000);
+                    
+                } else {
+                    showError(data.error || 'Demo not found.');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Failed to load demo. Please try again.');
+            }
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').innerHTML = `
+                <div class="error">
+                    <h2>❌ Demo Unavailable</h2>
+                    <p>${message}</p>
+                    <br>
+                    <p style="font-size:14px;color:#666;">
+                        Contact us for a new demo: <a href="mailto:your-email@domain.com">your-email@domain.com</a>
+                    </p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
