@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ATELIER NOIR · The Art of Quiet Opulence</title>
+  <style>
+    /* ----- RESET & GLOBAL ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #c9a962;
+      --gold-soft: #e8d5a3;
+      --gold-deep: #9a7b3f;
+      --black: #0c0b0a;
+      --onyx: #151310;
+      --charcoal: #1e1b16;
+      --smoke: #2a261f;
+      --ivory: #f5f1e8;
+      --ivory-muted: #d6cfc0;
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+      --font-body: 'Jost', 'Helvetica Neue', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--ivory);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* subtle luxury texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 20%, rgba(201, 169, 98, 0.04), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(201, 169, 98, 0.03), transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    h1, h2, h3, h4, .display {
+      font-family: var(--font-display);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .gold-text {
+      color: var(--gold);
+      background: linear-gradient(135deg, #e9d9b0 0%, #c9a962 45%, #a8873f 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ----- WATERMARK OVERLAY (tasteful but visible) ----- */
+    .watermark-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+    }
+
+    .watermark-overlay span {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 4.5rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(201, 169, 98, 0.7);
+      border: 2px solid rgba(201, 169, 98, 0.5);
+      padding: 1.2rem 2.5rem;
+      backdrop-filter: blur(2px);
+      background: rgba(0, 0, 0, 0.2);
+      transform: rotate(-6deg);
+      white-space: nowrap;
+      font-weight: 400;
+      text-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* ----- ANIMATIONS & REVEAL ----- */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) forwards;
+    }
+
+    .reveal-delay-1 { animation-delay: 0.15s; }
+    .reveal-delay-2 { animation-delay: 0.3s; }
+    .reveal-delay-3 { animation-delay: 0.45s; }
+    .reveal-delay-4 { animation-delay: 0.6s; }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ----- BUTTONS & LINKS ----- */
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.4s var(--ease);
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      border: 1px solid var(--gold);
+      font-weight: 500;
+    }
+
+    .btn-gold:hover {
+      background: transparent;
+      color: var(--gold);
+      border-color: var(--gold-soft);
+    }
+
+    .btn-outline:hover {
+      background: rgba(201, 169, 98, 0.1);
+      border-color: var(--gold-soft);
+      color: var(--gold-soft);
+    }
+
+    /* ----- HEADER / NAV ----- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.8rem 2rem;
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid rgba(201, 169, 98, 0.15);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.3em;
+      color: var(--ivory);
+      text-decoration: none;
+      font-weight: 400;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--ivory-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    /* ----- HERO SECTION with inline SVG artwork ----- */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: radial-gradient(ellipse at 70% 30%, #1a1712 0%, #0c0b0a 70%);
+      overflow: hidden;
+      padding: 4rem 0;
+    }
+
+    .hero-svg-container {
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.25;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .hero .subheadline {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--ivory-muted);
+      max-width: 550px;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* ----- SECTION GENERAL ----- */
+    section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-heading .sub {
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .divider {
+      width: 80px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.5rem auto;
+    }
+
+    /* ----- ABOUT SECTION ----- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-copy p {
+      margin-bottom: 1.5rem;
+      color: var(--ivory-muted);
+      font-weight: 300;
+    }
+
+    .about-copy .lead {
+      font-size: 1.3rem;
+      color: var(--ivory);
+      font-family: var(--font-display);
+      letter-spacing: 0.03em;
+    }
+
+    /* ----- SERVICES SECTION ----- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: var(--charcoal);
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+      transition: transform 0.4s var(--ease), border-color 0.4s;
+      box-shadow: var(--shadow);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--gold);
+    }
+
+    .service-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--gold-soft);
+    }
+
+    .service-card .service-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      color: var(--ivory-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ----- TESTIMONIALS ----- */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background: rgba(21, 19, 16, 0.8);
+      border-left: 3px solid var(--gold);
+      padding: 2rem;
+      font-style: italic;
+      color: var(--ivory);
+      box-shadow: var(--shadow);
+    }
+
+    .testimonial-card .quote {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-card .client {
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-size: 0.8rem;
+    }
+
+    /* ----- CONTACT SECTION ----- */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      background: var(--onyx);
+      padding: 3rem;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .contact-info h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+      color: var(--ivory-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-details {
+      margin-top: 2rem;
+    }
+
+    .contact-details p {
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    .contact-details strong {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    /* ----- FOOTER ----- */
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid rgba(201, 169, 98, 0.15);
+      color: var(--ivory-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem;
+      }
+      .nav-links {
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero {
+        min-height: 70vh;
+        padding: 3rem 0;
+      }
+      .hero-svg-container {
+        opacity: 0.15;
+        right: -20%;
+        width: 80%;
+      }
+      .about-grid, .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .contact-wrapper {
+        padding: 2rem;
+      }
+      .watermark-overlay span {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.2rem;
+        letter-spacing: 0.15em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1.2rem;
+      }
+      .btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- TASTEFUL WATERMARK OVERLAY -->
+  <div class="watermark-overlay">
+    <span>PREVIEW — UNLOCK FULL VERSION</span>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header class="navbar">
+    <a href="#" class="logo">ATELIER<span>NOIR</span></a>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION with inline SVG artwork -->
+  <section class="hero" id="hero">
+    <div class="hero-svg-container">
+      <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="300" cy="300" r="220" stroke="#c9a962" stroke-width="1.5" stroke-opacity="0.4"/>
+        <circle cx="300" cy="300" r="170" stroke="#c9a962" stroke-width="0.8" stroke-dasharray="6 8" stroke-opacity="0.5"/>
+        <path d="M300 80 L340 220 L480 260 L340 300 L300 440 L260 300 L120 260 L260 220 Z" fill="none" stroke="#e8d5a3" stroke-width="1.2" stroke-opacity="0.5"/>
+        <path d="M300 120 L320 200 L400 220 L320 240 L300 320 L280 240 L200 220 L280 200 Z" fill="#c9a962" fill-opacity="0.08" stroke="#c9a962" stroke-width="0.5"/>
+        <rect x="180" y="180" width="240" height="240" rx="2" stroke="#9a7b3f" stroke-width="0.6" stroke-dasharray="2 4" stroke-opacity="0.4"/>
+        <line x1="100" y1="300" x2="500" y2="300" stroke="#c9a962" stroke-width="0.5" stroke-opacity="0.2"/>
