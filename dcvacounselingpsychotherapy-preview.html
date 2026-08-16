@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCVA · Counseling & Psychotherapy</title>
+  <style>
+    /* === RESET & GLOBAL === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: #eae0d0;
+      font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* watermark overlay */
+    body::after {
+      content: "DCVA";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      font-size: 20vw;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(212, 175, 55, 0.03);
+      z-index: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* === TYPOGRAPHY === */
+    h1, h2, h3 {
+      font-family: 'Cinzel', 'Cormorant Garamond', serif;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #d4af37;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.1;
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, #d4af37, transparent);
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-weight: 300;
+      font-size: 1.15rem;
+      color: #d6cdb8;
+    }
+
+    .gold-text {
+      color: #d4af37;
+    }
+
+    /* === BUTTONS & LINKS === */
+    .btn {
+      display: inline-block;
+      background: transparent;
+      border: 1.5px solid #d4af37;
+      color: #d4af37;
+      padding: 0.9rem 2.8rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .btn:hover {
+      background: #d4af37;
+      color: #0a0a0a;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      position: relative;
+    }
+
+    .hero-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    .hero-sub {
+      font-size: 1.3rem;
+      letter-spacing: 0.4em;
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .hero-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin: 2rem auto;
+    }
+
+    /* === SECTION COMMON === */
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header h2 {
+      display: inline-block;
+    }
+
+    .section-header p {
+      max-width: 700px;
+      margin: 1.5rem auto 0;
+      font-style: italic;
+    }
+
+    /* === SERVICES === */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .service-card {
+      background: rgba(20, 18, 15, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 2.5rem 1.8rem;
+      backdrop-filter: blur(4px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #d4af37, #f5e7a3, #d4af37);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+      transform: translateY(-6px);
+    }
+
+    .service-icon {
+      font-size: 2.8rem;
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    /* === ABOUT === */
+    .about-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text {
+      flex: 1 1 400px;
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    .about-quote {
+      border-left: 3px solid #d4af37;
+      padding-left: 2rem;
+      font-style: italic;
+      color: #e9d9a0;
+      margin: 2rem 0;
+      font-size: 1.3rem;
+    }
+
+    .about-stats {
+      flex: 1 1 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .stat {
+      background: rgba(212, 175, 55, 0.05);
+      padding: 1.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Cinzel', serif;
+      font-size: 2.8rem;
+      color: #d4af37;
+      display: block;
+      line-height: 1;
+    }
+
+    /* === TESTIMONIALS === */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .testimonial-card {
+      background: #111110;
+      padding: 2.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+
+    .testimonial-card::after {
+      content: '“';
+      font-size: 6rem;
+      color: rgba(212, 175, 55, 0.1);
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.8rem;
+      color: #d6cdb8;
+    }
+
+    .testimonial-author {
+      color: #d4af37;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    /* === CONTACT === */
+    .contact-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
+
+    .contact-info {
+      flex: 1 1 300px;
+    }
+
+    .contact-info p {
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-form {
+      flex: 2 1 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea {
+      background: transparent;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 1rem 1.2rem;
+      color: #eae0d0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding: 2.5rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      color: #8f8a7a;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* === ANIMATIONS === */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeUp 1s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+      h1 {
+        font-size: 2.8rem;
+      }
+      .hero {
+        min-height: 70vh;
+      }
+      section {
+        padding: 3.5rem 0;
+      }
+    }
+
+    /* selection */
+    ::selection {
+      background: #d4af37;
+      color: #0a0a0a;
+    }
+  </style>
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <!-- luxury SVG background -->
+    <svg class="hero-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.15" />
+          <stop offset="50%" stop-color="#f5e7a3" stop-opacity="0.05" />
+          <stop offset="100%" stop-color="#d4af37" stop-opacity="0.2" />
+        </linearGradient>
+        <radialGradient id="radial" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.1"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#goldGrad)"/>
+      <circle cx="600" cy="400" r="300" fill="url(#radial)"/>
+      <path d="M 100 700 Q 300 400 600 600 T 1100 300" stroke="#d4af37" stroke-width="0.8" fill="none" opacity="0.3"/>
+      <path d="M 0 200 Q 400 100 800 300 T 1200 200" stroke="#f5e7a3" stroke-width="0.5" fill="none" opacity="0.2"/>
+      <path d="M 200 0 L 250 150 L 400 180 L 300 300 L 350 450 L 200 380 L 50 450 L 100 300 L 0 180 L 150 150 Z" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.15"/>
+    </svg>
+
+    <div class="container hero-content">
+      <div class="hero-sub fade-in">DCVA · psychotherapy</div>
+      <h1 class="fade-in delay-1">Inner Alchemy<br>for the Modern Mind</h1>
+      <div class="hero-divider"></div>
+      <p class="fade-in delay-2" style="max-width: 700px; margin: 0 auto 2.5rem; font-size: 1.3rem;">A sanctuary for deep transformation — where luxury meets profound psychological care.</p>
+      <a href="#contact" class="btn fade-in delay-3">Begin your journey</a>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="section-header">
+        <h2>Signature Services</h2>
+        <p>Tailored therapeutic experiences, crafted with precision & compassion</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-icon">✦</span>
+          <h3>Depth Psychotherapy</h3>
+          <p>Jungian-oriented sessions exploring the unconscious, dreams, and archetypes in a confidential, refined setting.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">◈</span>
+          <h3>Executive & High-Performance</h3>
+          <p>Discreet support for leaders, creatives, and changemakers — navigating pressure, burnout, and existential questions.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">❖</span>
+          <h3>Couples & Relationship</h3>
+          <p>Rebuild intimacy, trust, and communication with evidence-based approaches in an atmosphere of mutual respect.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">✧</span>
+          <h3>Trauma & Somatic Therapy</h3>
+          <p>Gentle, body-oriented methods to release stored tension and restore a sense of safety and wholeness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2>About DCVA</h2>
+      </div>
+      <div class="about-wrap">
+        <div class="about-text">
+          <p>DCVA Counseling & Psychotherapy was founded on the belief that true healing is
